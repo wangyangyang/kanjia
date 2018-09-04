@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/rem.js"></script>
+    <script>
+        window.onload = function(){
+            new Vue({
+                el:'#home',
+                data:{
+                    is_show_GL:false,
+                    showMask:false,
+                    show_help_cut:false,
+                },
+                methods:{
+                    show_GL(){
+                        this.is_show_GL = true;
+                    },
+                    hide_GL(){
+                        this.is_show_GL = false;
+                    },
+                    help_cut(){
+                        this.show_help_cut = true;
+                        this.showMask = true;
+                    },
+                    close_help(){
+                        this.show_help_cut = false;
+                         this.showMask = false;
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div id="home">
+    <div class="banner">
+        <img src="./images/banner.png">
+    </div>
+    <div class="count_box p_lr_20">
+        <div class="count">
+            <span><i>45456</i>人查看</span>
+            <span><i>45456</i>人分享</span>
+            <span><i>45456</i>人参与</span>
+        </div>
+        <span class="gonglue" @click="show_GL"><i></i>砍价攻略</span>
+    </div>
+    <h4 class="title_name p20">0元狂砍VIP亲子畅玩卡（砍多少优惠多少，畅玩摇篮 亲子共享社区2小时）</h4>
+    <div class="cut_off_line"></div> <!--分割线-->
+    <div class="user_box p_lr_20">
+        <div class="user_info">
+            <div class="user_avatar" style="background-image: url(./images/test1.png);"></div>
+            <div class="user_xq">
+                <span>好心情</span>
+                <p>共有<i>2</i>位好友，帮TA减掉了 <i>￥5.6</i>元</p>
+            </div>
+        </div>
+        <div class="cut_btn">
+            <span class="red_bj mr20" @click="help_cut">帮他砍价</span>
+            <span class="gray_bj  mr20"  v-if="false">已成功砍了3.92元</span>
+            <span class="yellow_bj">我也要薅羊毛</span>
+        </div>
+        <p class="cut_num">已有 <i>7893</i> 人砍价成功</p>
+    </div>
+    <div class="cut_off_line"></div> <!--分割线-->
+    <div class="main">
+        <div class="title">
+            <i></i><span>活动现状</span><i></i>
+        </div>
+        <div class="content">
+            <p class="item1">本次奖品共<i>50</i>份，剩余<i>12</i>份</p>
+            <div class="item2">
+                <p class="item2_1">距活动结束还剩：<i>15</i><span>天</span><i>15</i><span>时</span><i>15</i><span>分</span><i>15</i><span>秒</span></p>
+                <p class="item2_2">可砍到的最底价：<i>￥0.00</i> 元     原价：<i>￥99.00</i> 元</p>
+            </div>
+            <p class="item3">有没有一个去处， <br/>可以让宝妈轻松带娃， <br/>让宝宝玩的开心，又能有所收获？</p>
+            <p class="item4">答案非<i>摇篮亲子共享社区</i>莫属 <br/>它是一个时尚遛娃的新去<br/><b>40+</b>国家高端教玩具无限畅玩<br/><b>6000+</b>精选双语绘本应有尽有</p>
+            <div class="live_box">
+
+            </div>
+            <p class="item5">摇篮亲子共享社区<br/>源于中国母婴行业的引领者摇篮网<br/><b>20</b>年的不断创新和积累<br/>专为<b>0-6</b>岁宝宝精心设计<br/>满足孩子<i>玩乐、阅读、教育、</i><br/><i>社交、互动</i>等需求。</p>
+            <p class="item6">一起来看看家长是如何评价的吧？</p>
+        </div>
+        <div class="title">
+            <i></i><span>活动规则</span><i></i>
+        </div>
+
+        <ul class="guize">
+            <li><i>1.</i><span> 点击活动链接，即可参与活动；</span></li>
+            <li><i>2.</i><span> 本活动仅限有0~6岁宝宝家庭参与；</span></li>
+            <li><i>3.</i><span> 无论使用多少个帐号，砍价最低只能到底价；</span></li>
+            <li><i>4.</i><span> 本次活动不可与店内其他优惠、活动重叠使用；</span></li>
+            <li><i>5.</i><span> 温馨提示：价格砍掉多少优惠多少，参与砍价的家长朋友可以凭砍价手机截屏，在2018年10月31日前到摇篮亲子共享社区凯德太阳宫门店使用。</span></li>
+            <li><i>6.</i><span> “0元狂砍VIP亲子畅玩卡”砍价活动官方客服微信</span></li>
+            <li><i>7.</i><span> 本活动最终解释权归“摇篮亲子共享社区”所有。</span></li>
+        </ul>
+        <div class="title">
+            <i></i><span>砍价排行榜</span><i></i>
+        </div>
+        <ul class="cut_list">
+            <li class="cut_list_header">
+                <span class="ranking">排名</span><span class="nick">姓名</span><span class="price">当前价格</span>
+            </li>
+            <li>
+                <span class="ranking first"><i>1</i></span><span class="nick"><i style="background-image:url(./images/test1.png)"></i>姓名</span><span class="price">17元</span>
+            </li>
+            <li>
+                <span class="ranking second"><i>2</i></span><span class="nick"><i style="background-image:url(./images/test1.png)"></i>姓名</span><span class="price">已到底价</span>
+            </li>
+            <li>
+                <span class="ranking third"><i>3</i></span><span class="nick"><i style="background-image:url(./images/test1.png)"></i>姓名</span><span class="price">17元</span>
+            </li>
+            <li>
+                <span class="ranking"><i>4</i></span><span class="nick"><i style="background-image:url(./images/test1.png)"></i>姓名</span><span class="price">17元</span>
+            </li>
+            <li>
+
+                <span class="ranking"><i>5</i></span><span class="nick"><i style="background-image:url(./images/test1.png)"></i>姓名</span><span class="price">17元</span>
+            </li>
+            <li>
+                <span class="ranking"><i>6</i></span><span class="nick"><i style="background-image:url(./images/test1.png)"></i>姓名</span><span class="price">17元</span>
+            </li>
+        </ul>
+        <p class="showAll">查看全部排行榜<i></i></p>
+    </div>
+
+    <div class="cut_success_box" v-if="showMask" @touchmove.prevent>
+        <span class="icon_share"></span>
+
+        <div class="cut_success" v-if="show_help_cut">
+            <span class="icon_close" @click="close_help"></span>
+            <span class="cut_success_bj"></span>
+            <p>您已经成功为TA砍了<i>3.92元</i></p>
+            <div class="cut_btn" style="margin-top: 29px;">
+                 <span class="yellow_bj">我也要薅羊毛</span>
+            </div>
+        </div>
+
+        <div class="cut_success" style="padding-top: 2.65rem;" v-if="false">
+            <span class="icon_close"></span>
+            <span class="cut_success_bj"></span>
+            <p style="line-height: 36px;">创建成功，并且自砍一刀，<br/>赚了<i>3.92元</i></br>分享给好友，砍多少便宜多少</p>
+            <b class="small_tip">小技巧：分享到群聊，效果更好</b>
+        </div>
+    </div>
+
+    <div class="gonglue_box" v-if="is_show_GL" @touchmove.prevent>
+        <div class="gonglue_content">
+            <span class="icon_close" @click="hide_GL"></span>
+            <h4>砍价攻略</h4>
+            <p>为感谢广告消费者对摇篮亲子共享社区的支持和热爱，摇篮亲子共享社区为消费者提供免费领取商品的福利，消费者可以通过参与0元狂砍vip亲子畅玩卡活动获得商品。0元狂砍vip亲子畅玩卡活动内不涉及任何支付行为，请广大消费者放心参与。</p>
+            <p>选择0元狂砍vip亲子畅玩卡商品，邀请好友一起砍价，只要在规定时间内价格砍到0元就可以免费获得商品，所有商品成本由摇篮亲子共享社区承担。</p>
+            <p>您可以通过以下方式更便捷的免费拿商品分享到群聊，邀请更多好友帮你砍价</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
