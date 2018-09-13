@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/iscroll.js"></script>
+    <script src="./js/md5.js"></script>
+    <script src="./js/common.js"></script>
+    <style type="text/css">
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+    
+</head>
+<body>
+<div id="app" class="wraphome">
+    <div class="banner">
+        <img :src="detailInfo.home_img">
+    </div>
+    <div class="count_box p_lr_20">
+        <div class="count">
+            <span><i v-cloak>{{detailInfo.view_nums}}</i>人查看</span>
+            <span><i v-cloak>{{detailInfo.share_nums}}</i>人分享</span>
+            <span><i v-cloak>{{detailInfo.join_nums}}</i>人参与</span>
+        </div>
+        <span class="gonglue" @click="show_GL"><i></i>砍价攻略</span>
+    </div>
+    <h4 class="title_name p20" v-cloak>{{detailInfo.title}}</h4>
+    <div class="cut_off_line"></div> <!--分割线-->
+    <div class="user_box p_lr_20">
+        <h5><i v-cloak>{{detailInfo.user_nums}}</i> 位朋友帮您砍了价</h5>
+        <span >已砍 <i v-cloak>{{detailInfo.user_cut_price}}</i>元, 还差<i v-cloak>{{detailInfo.user_cut_price_low}}</i> 元就可以到底价了</span>
+        <div class="cut_btn" style="margin-top: 30px;margin-bottom: 34px;">
+            <span class="red_bj mr20">邀请朋友继续砍</span>
+            <span class="yellow_bj">见好就收 赶紧买单</span>
+        </div>
+    </div>
+    <div class="cut_off_line"></div> <!--分割线-->
+    <div class="main">
+        <div class="title">
+            <i></i><span>活动现状</span><i></i>
+        </div>
+        <div class="content">
+            <p class="item1">本次奖品共<i v-cloak>{{detailInfo.activity_stock}}</i>份，剩余<i v-cloak>{{detailInfo.stock}}</i>份</p>
+            <div class="item2" style="margin-bottom: 29px;">
+                <p class="item2_1">距活动结束还剩：<i v-cloak>{{timeStamp.tian}}</i><span>天</span><i v-cloak>{{timeStamp.shi}}</i><span>时</span><i v-cloak>{{timeStamp.fen}}</i><span>分</span><i v-cloak>{{timeStamp.miao}}</i><span>秒</span></p>
+                <p class="item2_2">可砍到的最底价：<i v-cloak>￥{{detailInfo.lower_price}}</i> 元     原价：<i v-cloak>￥{{detailInfo.price}}</i> 元</p>
+            </div>
+            <div class="cut_group_box" v-if="kanjia_list.length != 0">
+                <div class="title white-line" style="margin:17px 0;">
+                    <i></i><span>砍价帮</span><i></i>
+                </div>
+                <ul class="cut_group_list">
+                    <li v-for="item in kanjia_list">
+                        <span><i :style="'background-image:url('+item.user_avatar+')'"></i>{{item.user_name}}</span>
+                        <b><i></i>砍掉{{item.price}}元</b>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+     <div class="cut_off_line"></div> <!--分割线-->
+     <div class="goods_list_box">
+        <h4>优惠精选<span>SHOWTIME</span></h4>
+        <ul class="goods_list">
+            <li v-for="goods in goods_list" :data-id='goods.id'>
+                <div class="goods_pic">
+                    <img :src="goods.home_img" alt="">
+                    <span class="icon_sale"></span>
+                </div>
+                <h5 class="goods_title">{{goods.name}}</h5>
+                <p class="goods_english">{{goods.channel}}</p>
+                <div class="goods_price">
+                   <div>
+                       <span class="goods_sale">￥{{goods.price}}</span><span class="goods_real">原价<i>￥{{goods.original_price}}</i></span>
+                   </div>
+                   <span class="goods_buy">购买</span>
+                </div>
+            </li>
+            
+             
+        </ul>
+       
+     </div>
+
+
+
+    <div class="gonglue_box" v-if="is_show_GL" @touchmove.prevent>
+        <div class="gonglue_content">
+            <span class="icon_close" @click="hide_GL"></span>
+            <h4>砍价攻略</h4>
+            <p>为感谢广告消费者对摇篮亲子共享社区的支持和热爱，摇篮亲子共享社区为消费者提供免费领取商品的福利，消费者可以通过参与0元狂砍vip亲子畅玩卡活动获得商品。0元狂砍vip亲子畅玩卡活动内不涉及任何支付行为，请广大消费者放心参与。</p>
+            <p>选择0元狂砍vip亲子畅玩卡商品，邀请好友一起砍价，只要在规定时间内价格砍到0元就可以免费获得商品，所有商品成本由摇篮亲子共享社区承担。</p>
+            <p>您可以通过以下方式更便捷的免费拿商品分享到群聊，邀请更多好友帮你砍价</p>
+        </div>
+    </div>
+</div>
+<script>
+    // window.onload = function(){
+
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                is_show_GL:false,
+                showMask:false,
+                
+                detailInfo:{},
+                timeStamp:{},
+                noReq:true,
+                page:1,
+                per_page:5,
+                kanjia_list:[],
+                goods_list:[],
+                userId:islogin() == 1?JSON.parse(sessionStorage.getItem('loginState')).userId:'',
+                id:'1300000000004658',
+                share_userid:'153657539371405685'
+            },
+            created:function(){
+                this.get_info();
+                this.get_goods_data(this.page);
+            }, 
+            methods:{
+                show_GL(){
+                    this.is_show_GL = true;
+                },
+                hide_GL(){
+                    this.is_show_GL = false;
+                },
+                //获取信息
+                get_info:function(){
+                    var info_get_url = url+'/sharecenter/v1/haggle/shows';
+                    var that = this;
+                    $.ajax({
+                        url:info_get_url,
+                        data:{
+                            token:Token(info_get_url),
+                            timestamp:timeStamp(),
+                            app_dt:'web',
+                            id:that.id,
+                            share_userid: that.share_userid,
+                            app_userid:that.userId
+                        },
+                        type:'GET',
+                        dataType:'json',
+                        success:function(res){
+                            // console.log(res);
+                            if(res.code == 1){
+                                that.detailInfo = res.data;
+                                that.kanjia_list = res.data.user_top;
+                                var endTime = new Date(res.data.activity_endtime.replace(/-/g,"/")).getTime() + 1000;
+                                var interval = null;
+                                that.timeStamp =  {
+                                    tian: Math.floor(endTime / 1000 / 60 / 60 / 24)<10?'0'+Math.floor(endTime / 1000 / 60 / 60 / 24):Math.floor(endTime / 1000 / 60 / 60 / 24),
+                                    shi: Math.floor(endTime / 1000 / 60 / 60 % 24)<10?'0'+Math.floor(endTime / 1000 / 60 / 60 % 24):Math.floor(endTime / 1000 / 60 / 60 % 24),
+                                    fen: Math.floor(endTime / 1000 / 60 % 60)<10?'0'+Math.floor(endTime / 1000 / 60 % 60):Math.floor(endTime / 1000 / 60 % 60),
+                                    miao: Math.floor(endTime / 1000 % 60)<10?'0'+Math.floor(endTime / 1000 % 60):Math.floor(endTime / 1000 % 60)
+                                }
+                                that.$nextTick(function(){
+                                    interval = setInterval(function () {
+                                        var syhm = endTime - Date.now(); // 剩余毫秒
+                                        if (syhm >= 0) {
+                                            that.timeStamp =  {
+                                                tian: Math.floor(syhm / 1000 / 60 / 60 / 24)<10?'0'+Math.floor(syhm / 1000 / 60 / 60 / 24):Math.floor(syhm / 1000 / 60 / 60 / 24),
+                                                shi: Math.floor(syhm / 1000 / 60 / 60 % 24)<10?'0'+Math.floor(syhm / 1000 / 60 / 60 % 24):Math.floor(syhm / 1000 / 60 / 60 % 24),
+                                                fen: Math.floor(syhm / 1000 / 60 % 60)<10?'0'+Math.floor(syhm / 1000 / 60 % 60):Math.floor(syhm / 1000 / 60 % 60),
+                                                miao: Math.floor(syhm / 1000 % 60)<10?'0'+Math.floor(syhm / 1000 % 60):Math.floor(syhm / 1000 % 60)
+                                            }
+                                        } else {
+                                            clearInterval(interval);
+                                        }
+                                    }, 0);
+                                })
+                            }else{
+                                alert(res.msg)
+                            }
+                        }
+                    })
+                },
+               //获取商品列表 
+                get_goods_data:function(page){
+                    var goods_get_url = url+'/sharecenter/v1/commodity/index';
+                    var that = this;
+                    if(!that.noReq){
+                        return false;
+                    }
+                    $.ajax({
+                        url:goods_get_url,
+                        data:{
+                            token:Token(goods_get_url),
+                            timestamp:timeStamp(),
+                            app_dt:'web',
+                            app_userid:that.userId,
+                            share_userid: that.share_userid,
+                            page:page,
+                            per_page:that.per_page
+                        },
+                        type:'GET',
+                        dataType:'json',
+                        success:function(res){
+                            // console.log(res);
+                            if(res.code == 1){
+                                that.goods_list = that.goods_list.concat(res.data.data);
+                                if(res.data.data.length == that.per_page){
+                                    that.page++
+                                }else{
+                                    that.noReq = false
+                                }
+                                // console.log(that.goods_list)
+                            }else{
+                                alert(res.msg);
+                                return false;
+                            }
+                        }
+                    })
+                },
+            }
+        })
+
+    //}
+        
+        
+    //--------------上拉加载更多---------------
+    //获取滚动条当前的位置 
+    function getScrollTop() {
+        var scrollTop = 0;
+        if(document.documentElement && document.documentElement.scrollTop) {
+            scrollTop = document.documentElement.scrollTop;
+        } else if(document.body) {
+            scrollTop = document.body.scrollTop;
+        }
+        return scrollTop;
+    }
+
+    //获取当前可视范围的高度 
+    function getClientHeight() {
+        var clientHeight = 0;
+        if(document.body.clientHeight && document.documentElement.clientHeight) {
+            clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+        } else {
+            clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+        }
+        return clientHeight;
+    }
+
+    //获取文档完整的高度 
+    function getScrollHeight() {
+        return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    }
+    
+    //滚动事件触发
+    window.onscroll = function() {
+        if(getScrollTop() + getClientHeight() == getScrollHeight()) {
+            vm.get_goods_data(vm.page);
+        }
+    }
+    //-----------------结束--------------------
+</script>
+</body>
+</html>

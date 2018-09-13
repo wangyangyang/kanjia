@@ -33,18 +33,7 @@
     <h4 class="title_name p20" v-cloak>{{detailInfo.title}}</h4>
     <div class="cut_off_line"></div> <!--分割线-->
     <div class="user_box p_lr_20">
-        <div class="user_info">
-            <div class="user_avatar" :style="'background-image:url('+userinfo.user_avatar+')'"></div>
-            <div class="user_xq">
-                <span v-cloak>{{userinfo.user_name}}</span>
-                <p>共有<i v-cloak>{{detailInfo.user_nums}}</i>位好友，帮TA减掉了 <i v-cloak>￥{{detailInfo.user_cut_price}}</i>元</p>
-            </div>
-        </div>
-        <div class="cut_btn">
-            <span class="red_bj mr20" @click="help_cut" v-if="detailInfo.is_cut == 0">帮他砍价</span>
-            <span class="gray_bj  mr20" v-if="detailInfo.is_cut == 1">已成功砍了{{detailInfo.is_cut_price}}元</span>
-            <span class="yellow_bj" @click="create_cut">我也要薅羊毛</span>
-        </div>
+        <div class="myCreat" @click="create_cut">我要薅羊毛</div>
         <p class="cut_num">已有 <i v-cloak>{{detailInfo.cut_nums}}</i> 人砍价成功</p>
     </div>
     <div class="cut_off_line"></div> <!--分割线-->
@@ -91,6 +80,7 @@
             <li v-for="(item,index) in detailInfo.all_top">
                 <span class="ranking" :class="{'first':index+1 == 1,'second':index+1 == 2,'third':index+1 == 3}"><i>{{index+1}}</i></span><span class="nick"><i :style="'background-image:url('+item.user_avatar+')'"></i>{{item.user_name}}</span><span class="price">{{item.price}}元</span>
             </li>
+           
             
         </ul>
         <p class="showAll" v-if="hide_h" @click="show_all">查看全部排行榜<i></i></p>
@@ -217,44 +207,7 @@
                     hide_GL(){
                         this.is_show_GL = false;
                     },
-                    help_cut(){
-                        if(islogin() == 1){
-                            var cut_get_url = url+'/sharecenter/v1/haggle/cut';
-                            var that = this;
-                            $.ajax({
-                                url:cut_get_url,
-                                data:{
-                                    token:Token(cut_get_url),
-                                    timestamp:timeStamp(),
-                                    app_dt:'web',
-                                    id:that.id,
-                                    share_userid: that.share_userid,
-                                    app_userid:that.userId
-                                },
-                                type:'POST',
-                                dataType:'json',
-                                success:function(res){
-                                    console.log(res);
-                                    if(res.code == 1){
-                                        that.show_help_cut = true;
-                                        that.showMask = true;
-                                        that.cut_price = res.data.price;
-                                        that.detailInfo.is_cut = 1;
-                                        that.detailInfo.is_cut_price = res.data.price;
-                                        that.detailInfo.user_cut_price = Number(that.detailInfo.user_cut_price) + Number(res.data.price);
-                                        that.detailInfo.user_nums = that.detailInfo.user_nums + 1;
-                                    }else{
-                                        alert(res.msg);
-                                        that.close_help();
-                                    }
-                                }
-                            })
-                        }else{
-                            back_url()
-                        }
-
-                        
-                    },
+                    
                     close_help(){
                         this.showCreatCut = false;
                         this.show_help_cut = false;

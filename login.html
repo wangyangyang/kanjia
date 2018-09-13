@@ -7,22 +7,130 @@
     <link rel="stylesheet" type="text/css" href="./css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <script src="./js/vue.min.js"></script>
-    <script src="./js/rem.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/md5.js"></script>
+    <script src="./js/common.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <div class="logo"></div>
         <div class="input_box p80">
             <div class="input_wrap">
-                <span>手机号码</span><input type="tel" maxlength="11">
+                <span>手机号码</span><input type="tel" maxlength="11" id="tel" v-model="tel">
             </div>
             <div class="input_wrap">
-                <span>验证码</span><input type="number" maxlength="4"><i>获取验证码</i>
+                <span>验证码</span><input type="number" maxlength="4" id="code" v-model="code"><i class='get_code_btn' @click="get_code_btn">获取验证码</i>
             </div>
         </div>
-        <div class="login_btn">
+        <div class="login_btn" @click="login_btn">
             登&nbsp;&nbsp;&nbsp;录
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(function(){
+            new Vue({
+                el:'.wrapper',
+                data:{
+                    tel:'',
+                    code:'',
+                    isClick:true,
+                    nums:60,
+                    timer:null 
+                },
+                methods:{
+                    get_code_btn:function(){
+                        var code_get_url = url+'/sharecenter/v1/my/sendmsg';
+                        var that = this;
+                        if(!that.isClick){
+                            return false;
+                        }
+                        if(that.tel == ''){
+                            alert('请输入手机号');
+                            return false;
+                        }else if(!(/^1[345678]\d{9}$/.test(that.tel))){
+                            alert('请输入正确的手机号');
+                            return false;
+                        }
+                        $.ajax({
+                            url:code_get_url,
+                            data:{
+                                mobile:that.tel,
+                                token:Token(code_get_url),
+                                timestamp:timeStamp(),
+                                app_dt:'web'
+                            },
+                            type:'POST',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.code == 1){
+                                    that.isClick = false;
+                                    $('.get_code_btn').addClass('gray_timer').html(that.nums+'秒重新获取');
+                                    that.timer = setInterval(function(){
+                                        that.nums--;
+                                        if(that.nums > 0){
+                                            $('.get_code_btn').addClass('gray_timer').html(that.nums+'秒重新获取');
+                                        }else{
+                                            clearInterval(that.timer); //清除js定时器
+                                            $('.get_code_btn').removeClass('gray_timer').html('获取验证码');
+                                            that.nums = 60; //重置时间
+                                        }
+                                    }, 1000);
+                                    alert(res.data.code)
+                                }else{
+                                    alert(res.msg)
+                                }
+                            }
+                        })
+                    },
+                    login_btn:function(){
+                        var that = this;
+                        var login_get_url = url+'/sharecenter/v1/my/login';
+                        if(that.tel == ''){
+                            alert('请输入手机号');
+                            return false;
+                        }else if(!(/^1[345678]\d{9}$/.test(that.tel))){
+                            alert('请输入正确的手机号');
+                            return false;
+                        }
+                        // that.code = $('#code').val();
+                        if(that.code == ''){
+                            alert('请输入验证码');
+                            return false;
+                        }
+
+                        $.ajax({
+                            url:login_get_url,
+                            data:{
+                                mobile:that.tel,
+                                verification:that.code,
+                                token:Token(login_get_url),
+                                timestamp:timeStamp(),
+                                app_dt:'web'
+                            },
+                            type:'POST',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.code == 1){
+                                    var loginState = {
+                                        state : 1,
+                                        token : res.data.token,
+                                        userId : res.data.userId
+                                    };
+                                    sessionStorage.setItem('loginState',JSON.stringify(loginState));
+                                    // alert(sessionStorage.getItem('back_url'))
+                                    window.location.href=sessionStorage.getItem('back_url');
+                                        
+                                   
+                                }else{
+                                    alert(res.msg)
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        })
+    </script>
 </body>
 </html>
