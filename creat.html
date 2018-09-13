@@ -54,13 +54,13 @@
             </div>
             <p class="item5">摇篮亲子共享社区<br/>源于中国母婴行业的引领者摇篮网<br/><b>20</b>年的不断创新和积累<br/>专为<b>0-6</b>岁宝宝精心设计<br/>满足孩子<i>玩乐、阅读、教育、</i><br/><i>社交、互动</i>等需求。</p>
             <p class="item6">一起来看看家长是如何评价的吧？</p> -->
-            <p class="item3">{{detailInfo.content}}</p>
+            <p class="item3" v-html="detailInfo.content"></p>
         </div>
         <div class="title">
             <i></i><span>活动规则</span><i></i>
         </div>
 
-        <div class="guize">{{detailInfo.rules_content}}</div>
+        <div class="guize" v-html="detailInfo.rules_content"></div>
        <!--  <ul class="guize">
             <li><i>1.</i><span> 点击活动链接，即可参与活动；</span></li>
             <li><i>2.</i><span> 本活动仅限有0~6岁宝宝家庭参与；</span></li>
