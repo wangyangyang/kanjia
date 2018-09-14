@@ -290,6 +290,9 @@
     margin-top: 27px;
     line-height:24px;
 }
+.main .content .item3 img{
+    width: 100%;
+}
 .main .content .item4{
     margin-top: 35px;
     line-height:24px;
@@ -326,6 +329,9 @@
     width:100%;
     padding:0 20px;
     box-sizing:border-box;
+}
+.guize img{
+    width: 100%;
 }
 .guize li{
     overflow: hidden;

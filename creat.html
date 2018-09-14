@@ -33,7 +33,7 @@
     <h4 class="title_name p20" v-cloak>{{detailInfo.title}}</h4>
     <div class="cut_off_line"></div> <!--分割线-->
     <div class="user_box p_lr_20">
-        <div class="myCreat" @click="create_cut">我要薅羊毛</div>
+        <div class="myCreat" @click="create_cut"shows>我要薅羊毛</div>
         <p class="cut_num">已有 <i v-cloak>{{detailInfo.cut_nums}}</i> 人砍价成功</p>
     </div>
     <div class="cut_off_line"></div> <!--分割线-->
@@ -141,7 +141,7 @@
                     show_h:false,
                 },
                 created:function(){
-                    var detail_get_url = url+'/sharecenter/v1/haggle/shareshows';
+                    var detail_get_url = url+'/sharecenter/v1/haggle/shows';
                     var that = this;
                     // var userId = islogin() == 1?JSON.parse(sessionStorage.getItem('loginState')).userId:'';
                     $.ajax({
